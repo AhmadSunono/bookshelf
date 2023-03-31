@@ -5,11 +5,9 @@ import com.sonouno.bookshelf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Validated
@@ -35,13 +33,9 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<User> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} else {
-			User newUser = userService.createUser(user);
-			return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-		}
+	public ResponseEntity<User> createUser(@RequestBody User user) {
+		User newUser = userService.createUser(user);
+		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 }
 
