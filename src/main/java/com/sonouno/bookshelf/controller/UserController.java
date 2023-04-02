@@ -12,7 +12,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/admin/users")
 public class UserController {
 	@Autowired
 	private UserService userService;
@@ -30,12 +30,6 @@ public class UserController {
 		} else {
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
-	}
-
-	@PostMapping
-	public ResponseEntity<User> createUser(@RequestBody User user) {
-		User newUser = userService.createUser(user);
-		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 }
 
