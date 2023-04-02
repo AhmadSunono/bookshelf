@@ -1,5 +1,6 @@
 package com.sonouno.bookshelf.config;
 
+import com.sonouno.bookshelf.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,8 @@ public class SecurityConfig {
 						.authorizeHttpRequests()
 						.requestMatchers("/api/v1/auth/**")
 						.permitAll()
+						.requestMatchers("/api/v1/admin/**")
+						.hasAuthority(Role.ADMIN.name())
 						.anyRequest()
 						.authenticated()
 						.and()

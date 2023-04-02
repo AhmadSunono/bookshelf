@@ -1,11 +1,9 @@
-package com.sonouno.bookshelf.service;
+package com.sonouno.bookshelf.auth;
 
-import com.sonouno.bookshelf.controller.AuthenticationRequest;
-import com.sonouno.bookshelf.controller.AuthenticationResponse;
-import com.sonouno.bookshelf.controller.RegisterRequest;
 import com.sonouno.bookshelf.entity.User;
 import com.sonouno.bookshelf.enums.Role;
 import com.sonouno.bookshelf.repository.UserRepository;
+import com.sonouno.bookshelf.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
