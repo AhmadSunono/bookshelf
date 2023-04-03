@@ -2,17 +2,17 @@ package com.sonouno.bookshelf.entity;
 
 import com.sonouno.bookshelf.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.time.LocalDateTime;
 
 
 @Data
@@ -98,5 +98,28 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public UserDto toDto() {
+		return new UserDto(
+						id,
+						firstName,
+						lastName,
+						email,
+						createdAt,
+						updatedAt
+		);
+	}
+
+	@Data
+	@AllArgsConstructor
+	public static class UserDto {
+		private final Long id;
+		private final String firstName;
+		private final String lastName;
+		private final String email;
+		private final LocalDateTime createdAt;
+		private final LocalDateTime updatedAt;
+
 	}
 }

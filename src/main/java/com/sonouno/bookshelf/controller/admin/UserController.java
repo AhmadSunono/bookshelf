@@ -1,4 +1,4 @@
-package com.sonouno.bookshelf.controller;
+package com.sonouno.bookshelf.controller.admin;
 
 import com.sonouno.bookshelf.entity.User;
 import com.sonouno.bookshelf.service.UserService;
