@@ -1,7 +1,7 @@
 package com.sonouno.bookshelf.auth;
 
 import com.sonouno.bookshelf.entity.User;
-import com.sonouno.bookshelf.enums.Role;
+import com.sonouno.bookshelf.enums.ERole;
 import com.sonouno.bookshelf.repository.UserRepository;
 import com.sonouno.bookshelf.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class AuthenticationService {
 						.lastName(request.getLastName())
 						.email(request.getEmail())
 						.password(passwordEncoder.encode(request.getPassword()))
-						.role(Role.USER)
+						.role(ERole.USER)
 						.build();
 		var savedUser = repository.save(user);
 		var jwtToken = jwtService.generateToken(user);

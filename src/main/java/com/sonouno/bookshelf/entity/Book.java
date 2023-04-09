@@ -1,6 +1,7 @@
 package com.sonouno.bookshelf.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +14,12 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Entity
 @Table(name = "books")
 @Where(clause = "visible=true")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

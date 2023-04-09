@@ -1,6 +1,6 @@
 package com.sonouno.bookshelf.entity;
 
-import com.sonouno.bookshelf.enums.Role;
+import com.sonouno.bookshelf.enums.ERole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +40,7 @@ public class User implements UserDetails {
 
 	@Column(name = "role")
 	@Enumerated(EnumType.STRING)
-	private Role role;
+	private ERole role;
 
 	@Column(name = "provider")
 	private String provider;
