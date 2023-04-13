@@ -39,34 +39,45 @@ public class BookStatusService {
             throw new ResourceForbiddenException("Book Status", "user", user.getId());
         }
 
+        // Determine the new status based on the current status and request parameters
+        EBookStatus newStatus;
+        Integer readPages = bookStatusUpdateRequest.getReadPages().orElse(bookStatus.getReadPages());
+        Integer totalPages = book.getPages();
+
+        if (bookStatusUpdateRequest.getStatus().isPresent()) {
+            newStatus = bookStatusUpdateRequest.getStatus().orElse(bookStatus.getStatus());
+        } else if (bookStatusUpdateRequest.getReadPages().isPresent()) {
+            if (readPages == 0) {
+                newStatus = EBookStatus.BACKLOG;
+            } else if (readPages >= totalPages) {
+                newStatus = EBookStatus.COMPLETED;
+            } else {
+                newStatus = EBookStatus.READING;
+            }
+        } else {
+            newStatus = bookStatus.getStatus();
+        }
+
+        // Build the updated book status
         BookStatus updatedBookStatus = BookStatus.builder()
                 .id(bookId)
                 .book(book)
                 .readPages(bookStatusUpdateRequest.getReadPages().orElse(bookStatus.getReadPages()))
-                .status(bookStatusUpdateRequest.getStatus().orElse(bookStatus.getStatus()))
+                .status(newStatus)
                 .notes(bookStatusUpdateRequest.getNotes().orElse(bookStatus.getNotes()))
+                .startedAt(bookStatus.getStartedAt())
+                .completedAt(bookStatus.getCompletedAt())
                 .build();
 
-        if (bookStatusUpdateRequest.getStarted().orElse(false)
-                || (bookStatus.getStartedAt() == null) && bookStatusUpdateRequest.getReadPages().isPresent()) {
+        // Set the started time if necessary
+        if (bookStatusUpdateRequest.getStarted().orElse(false) || (bookStatus.getStartedAt() == null && bookStatusUpdateRequest.getReadPages().orElse(0) > 0)) {
             updatedBookStatus.setStartedAt(LocalDateTime.now());
         }
 
-        if (bookStatusUpdateRequest.getCompleted().orElse(false)
-                || (bookStatus.getCompletedAt() == null) && bookStatusUpdateRequest.getReadPages().orElse(0) >= bookStatus.getBook().getPages()) {
+        // Set the completed time and read pages if necessary
+        if (bookStatusUpdateRequest.getCompleted().orElse(false) || (bookStatus.getCompletedAt() == null && bookStatusUpdateRequest.getReadPages().orElse(0) >= bookStatus.getBook().getPages())) {
             updatedBookStatus.setCompletedAt(LocalDateTime.now());
-        }
-
-        if (bookStatusUpdateRequest.getReadPages().orElse(0) >= bookStatus.getBook().getPages()) {
-            updatedBookStatus.setStatus(EBookStatus.COMPLETED);
-        }
-
-        if (bookStatus.getStatus() == EBookStatus.COMPLETED && bookStatusUpdateRequest.getReadPages().orElse(0) < bookStatus.getBook().getPages()) {
-            updatedBookStatus.setStatus(EBookStatus.READING);
-        }
-
-        if (bookStatus.getStatus() == EBookStatus.READING && bookStatusUpdateRequest.getReadPages().orElse(0) == 0) {
-            updatedBookStatus.setStatus(EBookStatus.BACKLOG);
+            updatedBookStatus.setReadPages(bookStatus.getBook().getPages());
         }
 
         return bookStatusRepository.save(updatedBookStatus);
