@@ -1,4 +1,4 @@
-package com.sonouno.bookshelf.exceptions;
+package com.sonouno.bookshelf.exception;
 
 import lombok.Data;
 
