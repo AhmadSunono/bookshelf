@@ -1,7 +1,9 @@
-FROM openjdk:17-jdk-slim
-# ADD books-shelf.jar application.jar
-WORKDIR /app
-COPY target/books-shelf.jar application.jar
+# FROM openjdk:17-jdk-slim
+FROM --platform=linux/amd64 openjdk:17-jdk-alpine3.14
+
+ADD target/books-shelf.jar application.jar
+# WORKDIR /app
+# COPY target/books-shelf.jar application.jar
 
 ENTRYPOINT ["java", "-jar","application.jar"]
 
