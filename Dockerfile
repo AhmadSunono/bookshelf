@@ -1,5 +1,8 @@
 FROM openjdk:17-jdk-slim
 # ADD books-shelf.jar application.jar
+WORKDIR /app
+COPY target/books-shelf.jar application.jar
+
 ENTRYPOINT ["java", "-jar","application.jar"]
 
 ENV DATABASE_URL jdbc:postgresql://babar.db.elephantsql.com:5432/gtsfkczj
